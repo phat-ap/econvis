@@ -63,10 +63,11 @@ def get_series_df(category: str):
     data = res.read()
     # List of date details
     li = json.loads(data.decode("utf-8"))['result']['series']
-    df = pd.DataFrame(li).drop('category', axis = 1)
+    df = pd.DataFrame(li).drop('category', axis =   1)
     return df
 
 def get_all_series_df():
+    # Very API-intensive
     li = []
     category_df = get_category_df()
     n_category = category_df.shape[0]
