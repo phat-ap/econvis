@@ -1,24 +1,53 @@
 import streamlit as st
 import pandas as pd
+import plotly
+import plotly.graph_objects as go
 
-import api_bank_of_thailand as api_bot
+import api_bank_of_thailand_0_2 as ab
+import api_moc as am
 
-api_key = "a1c8bc6c-a1e9-46fe-9ca7-6a7ddb688af3"
-df_of_categories = api_bot.df_of_categories(api_key)
-list_of_categories_and_names = api_bot.list_of_categories_and_names(api_key)
+df_of_categories = ab.get_category_df()
+
 
 
 
 add_sidebar = st.sidebar.selectbox('Select View', 
-                                   ('Dashboard', 
-                                    'Table List',
+                                   ('Test', 
+                                    'CPI',
                                     'Series List'
                                     )
                                    )
-if add_sidebar == 'Dashboard':
-    pass
-if add_sidebar == 'Table List':
-    st.table(data = df_of_categories) #
+if add_sidebar == 'Test':
+    col1, col2 = st.columns(2)
+    EC_EI_020 = ab.BOTCategory('EC_EI_020')
+    bot_df_EC_EI_020 = EC_EI_020.get_obs_df()
+    with col1:
+        st.line_chart(pd.to_numeric(bot_df_EC_EI_020['EIEXUSDM00159']))
+    with col2:
+        st.line_chart(pd.to_numeric(bot_df_EC_EI_020['EIIMUSDM00161']))
+    st.line_chart(pd.to_numeric(bot_df_EC_EI_020['EIIMUSDM00160']))
+    fig = go.Figure(data = [go.Scatter(x = bot_df_EC_EI_020.index, y = pd.to_numeric(bot_df_EC_EI_020['EIIMUSDM00160']), mode = 'lines')], layout = {'title': 'EIIMUSDM00160'})
+    st.write(fig)
+if add_sidebar == 'CPI':
+    
+    fig = go.Figure(data = [go.Scatter(name='CPI',
+                                       x = am.df_ctg_12m.index,
+                                       y = am.df_ctg_12m['CPI'],
+                                       text = am.df_ctg_12m['CPI'].round(1),
+                                       textposition = 'top center',
+                                       mode = "lines+markers+text"),
+                            go.Bar(name = 'Core CPI', 
+                                   x = am.df_ctg_12m.index, 
+                                   y = am.df_ctg_12m['Core CPI']),
+                            go.Bar(name = 'Energy', 
+                                   x = am.df_ctg_12m.index, 
+                                   y = am.df_ctg_12m['Non Core CPI Energy']),
+                            go.Bar(name = 'Raw Food', 
+                                   x = am.df_ctg_12m.index, 
+                                   y = am.df_ctg_12m['Non Core CPI Raw Food'])
+                            ]
+                    )
+    fig.update_layout(barmode='stack')
+    st.write(fig)
 if add_sidebar == 'Series List':
-    st.selectbox('Table', list_of_categories_and_names)
-    st.dataframe(data = api_bot.df_of_series_in_a_category(api_key, 'EC_MB_012_S3').replace("_", " ", regex=True), use_container_width  = True)
+    pass
