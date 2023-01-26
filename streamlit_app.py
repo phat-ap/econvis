@@ -35,6 +35,6 @@ if add_sidebar == 'CPI':
                             ]
                     )
     fig.update_layout(barmode='stack')
-    st.write(fig)
+    st.plotly_chart(fig, use_container_width=True)
 if add_sidebar == 'Series List':
     pass
