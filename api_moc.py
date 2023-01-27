@@ -47,8 +47,7 @@ def get_cpi_series(series_name = "CPI", series_id = "0000000000000000", from_yea
     df.index = pd.to_datetime(df['date'])
     return df['price_index'].rename(series_name)
 
-def get_cpi_df():
-    
+def get_cpi_df(dict_cpi_series_code = dict_cpi_series_code):
     li = []
     for series_name, series_id in dict_cpi_series_code.items():
         li.append(get_cpi_series(series_name, series_id))
