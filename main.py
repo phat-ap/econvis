@@ -1,13 +1,12 @@
-from dash import Dash, dcc               # pip install dash
-import dash_bootstrap_components as dbc  # pip install dash-bootstrap-components
+from dash import Dash, dcc, html
+import dash_bootstrap_components as dbc
+import plotly.express as px
 
-# Build your components
+# Build App
 app = Dash(__name__, external_stylesheets=[dbc.themes.SPACELAB])
-mytext = dcc.Markdown(children="# Hello World - let's build web apps in Python!")
 
-# Customize your own Layout
-app.layout = dbc.Container([mytext])
+# layout
+app.layout = dbc.Container([mytitle, mygraph, dropdown])
 
-# Run app
-if __name__=='__main__':
-    app.run_server()
+# Run app and display result inline in the notebook
+app.run_server()
