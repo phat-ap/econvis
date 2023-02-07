@@ -8,6 +8,7 @@ Created on Tue Feb  7 20:56:41 2023
 import streamlit as st
 import pandas as pd
 import os
+from scipy.stats import zscore
 
 st.set_page_config(
     page_title="Dashboard"
@@ -27,9 +28,7 @@ df = (df
       .pct_change(12)
       )*100
 
-df = (df
-      .style.background_gradient(axis=None)
-      )
+
 
 # sidebar
 st.sidebar.header("Dashboard")
@@ -45,7 +44,8 @@ st.markdown(
 """
 )
 
-st.dataframe(df.drop_na())
+st.dataframe(df.style.background_gradient(axis=None))
+st.dataframe(df.style.background_gradient(axis=None, gmap=df.apply(zscore, nan_policy='omit', axis = 0), cmap='PiYG'))
 
 if __name__ == '__main__':
     pass
