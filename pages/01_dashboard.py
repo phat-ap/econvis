@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 # Data
-df = pd.read_excel(os.path.dirname(os.path.abspath('__file__')) + '\\data\\tha_budget_disbursement.xlsx')
+df = pd.read_csv('https://raw.githubusercontent.com/phat-ap/econvis/main/data/tha_budget_disbursement.csv')
 
 # sidebar
 st.sidebar.header("Dashboard")
@@ -32,4 +32,4 @@ st.markdown(
 
 st.dataframe(df)
 
-print(Path(__file__).parent)
+print(df)
