@@ -20,18 +20,19 @@ st.set_page_config(
 # Data
 @st.experimental_memo
 def fetch_and_clean_data():
-    df = pd.read_csv('https://raw.githubusercontent.com/phat-ap/econvis/main/data/tha_budget_disbursement.csv', 
-                     index_col = 0, 
-                     parse_dates = True)
-    
-    df = (df
-          .drop(columns = 'carry-over', axis = 1)
-          .rename(columns = {'current_current': 'Current Expenditure', 
-                             'current_capital': 'Capital Expenditure'
-                             }
-                  )
-          .pct_change(12)
-          )*100
+    # Central government budget disbursement
+    df_disb = (pd
+               .read_csv('https://raw.githubusercontent.com/phat-ap/econvis/main/data/tha_budget_disbursement.csv', 
+                         index_col = 0, 
+                         parse_dates = True)
+               .drop(columns = 'carry-over', axis = 1)
+               .rename(columns = {'current_current': 'Current Expenditure', 
+                                  'current_capital': 'Capital Expenditure'
+                                  }
+                       )
+               .pct_change(12)
+               ) * 100
+    df = df_disb
     # Format date
     df.index = df.index.format(formatter = lambda t: t.strftime("%b %y"))
     return df
