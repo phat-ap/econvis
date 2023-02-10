@@ -10,7 +10,7 @@ import numpy as np
 
 df_dbd = (pd
           # Try to change to github
-          .read_csv('C:\\Users\\phata\\Documents\\GitHub\\econvis\\data\\tha_firms_est_and_dis.csv', 
+          .read_csv('https://raw.githubusercontent.com/phat-ap/econvis/main/data/tha_firms_est_and_dis_2.csv', 
                     parse_dates = True)
           .drop(columns = ['obj_code', 'subsector'],
                 axis = 1)
@@ -21,6 +21,7 @@ df_dissolved = df_dbd.query('type == "Dissolved"').groupby(['date'])['type'].cou
 df_est_and_dis = pd.concat([df_established, df_dissolved], axis = 1)
 print(df_est_and_dis)
 
+# Add column: southern
 li_southern = ['Chumphon', 'Krabi', 'Nakhon Si Thammarat', 'Narathiwat', 'Pattani', 'Phang Nga', 'Phatthalung', 'Phuket', 'Ranong', 'Satun', 'Songkhla', 'Surat Thani', 'Trang', 'Yala']
 southern = []
 for row in df_dbd['province']:
@@ -29,7 +30,8 @@ for row in df_dbd['province']:
     else:
         southern.append(False)
 df_dbd['southern'] = southern
-print(df_dbd)         
+
+
 
 EST_ALL_WK = sorted(df_dbd.query('type == "Established"')['registered_capital'].to_list())
 EST_ALL_SOUTH = sorted(df_dbd.query('southern == True & type == "Established" & province != "Songkhla"')['registered_capital'].to_list())
