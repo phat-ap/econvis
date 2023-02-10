@@ -17,3 +17,4 @@ df_dbd = (pd
 df_established = df_dbd.query('type == "Established"').groupby(['date'])['type'].count().rename('n_established')
 df_dissolved = df_dbd.query('type == "Dissolved"').groupby(['date'])['type'].count().rename('n_dissolved')
 df_est_and_dis = pd.concat([df_established, df_dissolved], axis = 1)
+print(df_est_and_dis)
