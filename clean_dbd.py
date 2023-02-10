@@ -7,8 +7,10 @@ Created on Mon Feb  6 10:22:55 2023
 # Import libraries
 import pandas as pd
 import numpy as np
+import plotly.io as pio
+pio.renderers.default = "browser"
 
-df = pd.read_csv('C:\\Users\\phata\\Desktop\\Data\\DBD\\for python.csv')
+df = pd.read_csv('C:\\Users\\phata\\Documents\\GitHub\\econvis\\gini_prep.csv')
 
 def gini(x):
     total = 0
@@ -19,7 +21,6 @@ def gini(x):
 def lorenz_curve(col):
     q = np.array([round(i,4) for i in np.linspace(0.001, 99.999, 99999)])
     data = df[col].dropna()
-    nrow = data.shape[0]
     cumsum_to_total = data.cumsum()/data.sum()
     perc = np.percentile(cumsum_to_total, q)
     # gini = sum(q/100-perc)/99999
@@ -28,6 +29,9 @@ def lorenz_curve(col):
 df = pd.concat([lorenz_curve(col)[0] for col in df.columns], axis=1)
 df.to_csv('gini_results.csv')
 print([lorenz_curve(col)[1] for col in df.columns])
+
+df = pd.read_csv('C:\\Users\\phata\\Documents\\GitHub\\econvis\\gini_results.csv')
+
 
 import plotly.graph_objects as go
 fig = go.Figure(
