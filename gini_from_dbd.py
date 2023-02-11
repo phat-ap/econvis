@@ -31,8 +31,6 @@ for row in df_dbd['province']:
         southern.append(False)
 df_dbd['southern'] = southern
 
-
-
 EST_ALL_WK = sorted(df_dbd.query('type == "Established"')['registered_capital'].to_list())
 EST_ALL_SOUTH = sorted(df_dbd.query('southern == True & type == "Established" & province != "Songkhla"')['registered_capital'].to_list())
 EST_ALL_SONG = sorted(df_dbd.query('type == "Established" & province == "Songkhla"')['registered_capital'].to_list())
